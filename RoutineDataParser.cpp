@@ -42,6 +42,7 @@ QVector<RoutineListEntry*> RoutineDataParser::buildRoutineList()
         RoutineData *rd = *it;
         RoutineListEntry *rle = new RoutineListEntry();
         rle->name    = rd->name;
+        if (rd->name == "") rle->name = "<anon>";
         rle->file    = rd->file;
         rle->line    = rd->line;
         rle->entries = rd->entries;
