@@ -37,8 +37,7 @@ int main(int argc, char *argv[])
     qDebug() << "Total time:" << thingy["total_time"].toInt();
     qDebug() << "Spesh time:" << thingy["spesh_time"].toInt();
 
-    QJsonObject callGraph = thingy["call_graph"].toObject();
-    ProfilingDataParser pdp(callGraph);
+    ProfilingDataParser pdp(thingy);
     pdp.buildRoutineList();
 
     RoutineListModel rlm(0, pdp.buildRoutineList());

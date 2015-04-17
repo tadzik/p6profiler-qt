@@ -53,8 +53,9 @@ public:
     ProfilingDataParser(QJsonObject &root)
     {
         totalExclusive = 0;
-        totalInclusive = root["inclusive_time"].toInt();
-        walkCallGraphNode(root);
+        QJsonObject callGraph = root["call_graph"].toObject();
+        totalInclusive = callGraph["inclusive_time"].toInt();
+        walkCallGraphNode(callGraph);
     }
 
     void walkCallGraphNode(QJsonObject&);
