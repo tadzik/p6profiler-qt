@@ -1,5 +1,6 @@
 #include "RoutineDataParser.h"
 #include "RoutineListModel.h"
+#include "RoutineView.h"
 #include <QAbstractTableModel>
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -7,8 +8,6 @@
 #include <QFile>
 #include <QDebug>
 #include <QApplication>
-#include <QTableView>
-#include <QHeaderView>
 
 int main(int argc, char *argv[])
 {
@@ -46,10 +45,8 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
-    QTableView view;
+    RoutineView view;
     view.setModel(&rlm);
-    view.verticalHeader()->hide();
-    view.resizeColumnsToContents();
     view.show();
     return app.exec();
 }
