@@ -12,12 +12,12 @@
 int main(int argc, char *argv[])
 {
     if (argc != 2) {
-        qDebug() << "wrong usage";
+        qDebug() << "Usage:" << argv[0] << "<filename.json>";
         return 1;
     }
     QFile profile(argv[1]);
     if (!profile.open(QIODevice::ReadOnly)) {
-        qDebug() << "fuck";
+        qDebug() << "Failed to open" << argv[1];
         return 1;
     }
     QByteArray jsondata = profile.readAll();
@@ -25,12 +25,12 @@ int main(int argc, char *argv[])
 
     QJsonDocument rawdata(QJsonDocument::fromJson(jsondata));
     if (!rawdata.isArray()) {
-        qDebug() << "wrong format";
+        qDebug() << "Malformed input file";
         return 1;
     }
     QJsonArray arr = rawdata.array();
     if (!arr[0].isObject()) {
-        qDebug() << "wrong format";
+        qDebug() << "Malformed input file";
         return 1;
     }
     QJsonObject thingy = arr[0].toObject();
