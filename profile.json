@@ -1,0 +1,67 @@
+[
+   {
+      "call_graph" : {
+         "name" : "",
+         "osr" : 0,
+         "inlined_entries" : 0,
+         "entries" : 1,
+         "spesh_entries" : 0,
+         "exclusive_time" : 11,
+         "deopt_one" : 0,
+         "line" : 1250,
+         "callees" : [
+            {
+               "line" : 1,
+               "deopt_one" : 0,
+               "exclusive_time" : 17,
+               "spesh_entries" : 0,
+               "entries" : 1,
+               "inlined_entries" : 0,
+               "name" : "<unit-outer>",
+               "osr" : 0,
+               "allocations" : [
+                  {
+                     "type" : "BOOTCode",
+                     "jit" : 0,
+                     "spesh" : 0,
+                     "id" : 27937512,
+                     "count" : 1
+                  }
+               ],
+               "deopt_all" : 0,
+               "jit_entries" : 0,
+               "inclusive_time" : 20,
+               "callees" : [
+                  {
+                     "inclusive_time" : 2,
+                     "id" : 77570832,
+                     "file" : "-e",
+                     "allocations" : [],
+                     "deopt_all" : 0,
+                     "jit_entries" : 0,
+                     "entries" : 1,
+                     "inlined_entries" : 0,
+                     "osr" : 0,
+                     "name" : "<unit>",
+                     "line" : 1,
+                     "deopt_one" : 0,
+                     "exclusive_time" : 2,
+                     "spesh_entries" : 0
+                  }
+               ],
+               "file" : "-e",
+               "id" : 83260368
+            }
+         ],
+         "file" : "gen/moar/stage2/NQPHLL.nqp",
+         "id" : 30275904,
+         "inclusive_time" : 32,
+         "jit_entries" : 0,
+         "deopt_all" : 0,
+         "allocations" : []
+      },
+      "gcs" : [],
+      "spesh_time" : 1455,
+      "total_time" : 3044
+   }
+]
