@@ -48,6 +48,7 @@ class ProfilingDataParser {
     QMap<int, RoutineData*> routines;
     int totalExclusive;
     int totalInclusive;
+    GCData gcData;
 
 public:
     ProfilingDataParser(QJsonObject &root)
@@ -56,9 +57,12 @@ public:
         QJsonObject callGraph = root["call_graph"].toObject();
         totalInclusive = callGraph["inclusive_time"].toInt();
         walkCallGraphNode(callGraph);
+        QJsonArray gcData = root["gcs"].toArray();
+        walkGCNodes(gcData);
     }
 
     void walkCallGraphNode(QJsonObject&);
+    void walkGCNodes(QJsonArray&);
 
     QVector<RoutineListEntry*> buildRoutineList();
 };

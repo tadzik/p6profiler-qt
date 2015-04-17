@@ -34,6 +34,21 @@ void ProfilingDataParser::walkCallGraphNode(QJsonObject& node)
     }
 }
 
+void ProfilingDataParser::walkGCNodes(QJsonArray& arr)
+{
+    QJsonArray::const_iterator it;
+    for (it = arr.begin(); it != arr.end(); it++) {
+        QJsonObject obj = (*it).toObject();
+        if (obj["full"].toInt() != 0) {
+            gcData.gcFull++;
+            gcData.gcFullTime += obj["time"].toInt();
+        } else {
+            gcData.gcNursery++;
+            gcData.gcNurseryTime += obj["time"].toInt();
+        }
+    }
+}
+
 QVector<RoutineListEntry*> ProfilingDataParser::buildRoutineList()
 {
     QVector<RoutineListEntry*> routineList;
