@@ -1,5 +1,5 @@
-#ifndef _ROUTINE_DATA_PARSER_
-#define _ROUTINE_DATA_PARSER_
+#ifndef _PROFILING_DATA_PARSER_
+#define _PROFILING_DATA_PARSER_
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QString>
@@ -10,9 +10,12 @@ struct RoutineData {
     int id;
     int entries;
     int speshEntries;
+    int inlinedEntries;
     int JITEntries;
     int exclusive;
     int inclusive;
+    int deoptOnes;
+    int deoptAlls;
     int OSR;
     int recDepth;
     QString name;
@@ -22,18 +25,32 @@ struct RoutineData {
     RoutineData(int eye_dee)
     {
         id = eye_dee;
-        entries = speshEntries = JITEntries = exclusive = inclusive
+        entries = speshEntries = JITEntries = inlinedEntries
+                = exclusive = inclusive
+                = deoptOnes = deoptAlls
                 = OSR = recDepth = line = 0;
     }
 };
 
-class RoutineDataParser {
+struct GCData {
+    int gcNursery;
+    int gcNurseryTime;
+    int gcFull;
+    int gcFullTime;
+
+    GCData()
+    {
+        gcNursery = gcNurseryTime = gcFull = gcFullTime = 0;
+    }
+};
+
+class ProfilingDataParser {
     QMap<int, RoutineData*> routines;
     int totalExclusive;
     int totalInclusive;
 
 public:
-    RoutineDataParser(QJsonObject &root)
+    ProfilingDataParser(QJsonObject &root)
     {
         totalExclusive = 0;
         totalInclusive = root["inclusive_time"].toInt();

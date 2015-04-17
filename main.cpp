@@ -1,4 +1,4 @@
-#include "RoutineDataParser.h"
+#include "ProfilingDataParser.h"
 #include "RoutineListModel.h"
 #include "RoutineView.h"
 #include <QAbstractTableModel>
@@ -38,10 +38,10 @@ int main(int argc, char *argv[])
     qDebug() << "Spesh time:" << thingy["spesh_time"].toInt();
 
     QJsonObject callGraph = thingy["call_graph"].toObject();
-    RoutineDataParser rc(callGraph);
-    rc.buildRoutineList();
+    ProfilingDataParser pdp(callGraph);
+    pdp.buildRoutineList();
 
-    RoutineListModel rlm(0, rc.buildRoutineList());
+    RoutineListModel rlm(0, pdp.buildRoutineList());
 
     QApplication app(argc, argv);
 

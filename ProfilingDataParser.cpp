@@ -1,9 +1,9 @@
-#include "RoutineDataParser.h"
+#include "ProfilingDataParser.h"
 
 // I kept is as close as possible to the JS version, some thing could've been
 // done better, but this at least looks mostly the same as the original, so
 // it's easier to track changes to both
-void RoutineDataParser::walkCallGraphNode(QJsonObject& node)
+void ProfilingDataParser::walkCallGraphNode(QJsonObject& node)
 {
     int id = node["id"].toInt();
     if (!routines.contains(id)) {
@@ -34,7 +34,7 @@ void RoutineDataParser::walkCallGraphNode(QJsonObject& node)
     }
 }
 
-QVector<RoutineListEntry*> RoutineDataParser::buildRoutineList()
+QVector<RoutineListEntry*> ProfilingDataParser::buildRoutineList()
 {
     QVector<RoutineListEntry*> routineList;
     QMap<int, RoutineData*>::iterator it;
