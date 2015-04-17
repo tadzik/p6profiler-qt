@@ -49,11 +49,22 @@ class ProfilingDataParser {
     int totalExclusive;
     int totalInclusive;
     GCData gcData;
+    int totalTime;
+    int speshTime;
+    int totalEntries;
+    int speshEntries;
+    int inlinedEntries;
+    int JITEntries;
+    int totalOSR;
+    int totalDeoptOnes;
+    int totalDeoptAlls;
 
 public:
     ProfilingDataParser(QJsonObject &root)
     {
         totalExclusive = 0;
+        totalTime = root["total_time"].toInt();
+        speshTime = root["spesh_time"].toInt();
         QJsonObject callGraph = root["call_graph"].toObject();
         totalInclusive = callGraph["inclusive_time"].toInt();
         walkCallGraphNode(callGraph);
@@ -65,6 +76,7 @@ public:
     void walkGCNodes(QJsonArray&);
 
     QVector<RoutineListEntry*> buildRoutineList();
+    QMap<QString, QVariant> buildOverviewData();
 };
 
 #endif

@@ -13,12 +13,22 @@ void ProfilingDataParser::walkCallGraphNode(QJsonObject& node)
     routines[id]->file = node["file"].toString();
     routines[id]->line = node["line"].toInt();
 
-    routines[id]->entries      += node["entries"].toInt();
-    routines[id]->speshEntries += node["spesh_entries"].toInt();
-    routines[id]->JITEntries   += node["jit_entries"].toInt();
-    routines[id]->exclusive    += node["exclusive_time"].toInt();
-    totalExclusive             += node["exclusive_time"].toInt();
-    routines[id]->OSR          += node["osr"].toInt();
+    routines[id]->entries        += node["entries"].toInt();
+    totalEntries                 += node["entries"].toInt();
+    routines[id]->speshEntries   += node["spesh_entries"].toInt();
+    speshEntries                 += node["spesh_entries"].toInt();
+    routines[id]->inlinedEntries += node["inlined_entries"].toInt();
+    inlinedEntries               += node["inlined_entries"].toInt();
+    routines[id]->JITEntries     += node["jit_entries"].toInt();
+    JITEntries                   += node["jit_entries"].toInt();
+    routines[id]->exclusive      += node["exclusive_time"].toInt();
+    totalExclusive               += node["exclusive_time"].toInt();
+    routines[id]->OSR            += node["osr"].toInt();
+    totalOSR                     += node["osr"].toInt();
+    routines[id]->deoptOnes      += node["deopt_one"].toInt();
+    totalDeoptOnes               += node["deopt_one"].toInt();
+    routines[id]->deoptAlls      += node["deopt_all"].toInt();
+    totalDeoptAlls               += node["deopt_all"].toInt();
     if (routines[id]->recDepth == 0) {
         routines[id]->inclusive += node["exclusive_time"].toInt();
     }
@@ -73,4 +83,49 @@ QVector<RoutineListEntry*> ProfilingDataParser::buildRoutineList()
         routineList.push_back(rle);
     }
     return routineList;
+}
+
+QMap<QString, QVariant> ProfilingDataParser::buildOverviewData()
+{
+    QMap<QString, QVariant> ret;
+    // Time spent
+    float gcTime        = gcData.gcNurseryTime + gcData.gcFullTime;
+    float overheadTime  = speshTime + gcTime;
+    float executingTime = totalTime - overheadTime;
+    ret["TotalTime"]            = (float)totalTime / 1000;
+    ret["OverheadTime"]         = overheadTime / 1000;
+    ret["OverheadTimePercent"]  = 100 * overheadTime / totalTime;
+    ret["ExecutingTime"]        = executingTime / 1000;
+    ret["ExecutingTimePercent"] = 100 * executingTime / totalTime;
+    ret["GCTime"]               = gcTime / 1000;
+    ret["GCTimePercent"]        = 100 * gcTime / totalTime;
+    ret["SpeshTime"]            = (float)speshTime / 1000;
+    ret["SpeshTimePercent"]     = 100 * (float)speshTime / totalTime;
+    // Routines
+    int interpEntries           = totalEntries - (JITEntries + speshEntries);
+    ret["EntriesWithoutInline"] = totalEntries - inlinedEntries;
+    ret["EntriesInline"]        = inlinedEntries;
+    ret["InlinePercent"]        = 100 * (float)inlinedEntries / totalEntries;
+    ret["InterpFrames"]         = interpEntries;
+    ret["InterpFramesPercent"]  = 100 * (float)interpEntries / totalEntries;
+    ret["SpeshFrames"]          = speshEntries;
+    ret["SpeshFramesPercent"]   = 100 * (float)speshEntries / totalEntries;
+    ret["JITFrames"]            = JITEntries;
+    ret["JITFramesPercent"]     = 100 * (float)JITEntries / totalEntries;
+
+    // Garbage collection
+    ret["GCRuns"]         = gcData.gcNursery + gcData.gcFull;
+    ret["FullGCRuns"]     = gcData.gcFull;
+    ret["NurseryAverage"] = ((float)gcData.gcNurseryTime / 1000) / gcData.gcNursery;
+    ret["FullAverage"]    = ((float)gcData.gcFullTime / 1000) / gcData.gcFull;
+
+    // Dynamic optimization
+    int optimizedFrames    = speshEntries + JITEntries;
+    ret["OptimizedFrames"] = optimizedFrames;
+    ret["DeoptOnes"]       = totalDeoptOnes;
+    ret["DeoptOnePercent"] = 100 * (float)totalDeoptOnes / (optimizedFrames || 1);
+    ret["DeoptAlls"]       = totalDeoptAlls;
+    ret["OSRs"]            = totalOSR;
+
+    return ret;
 }

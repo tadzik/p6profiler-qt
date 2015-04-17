@@ -34,12 +34,8 @@ int main(int argc, char *argv[])
         return 1;
     }
     QJsonObject thingy = arr[0].toObject();
-    qDebug() << "Total time:" << thingy["total_time"].toInt();
-    qDebug() << "Spesh time:" << thingy["spesh_time"].toInt();
 
     ProfilingDataParser pdp(thingy);
-    pdp.buildRoutineList();
-
     RoutineListModel rlm(0, pdp.buildRoutineList());
 
     QApplication app(argc, argv);
