@@ -10,8 +10,8 @@ struct RoutineData {
     int id;
     int entries;
     int speshEntries;
-    int inlinedEntries;
     int JITEntries;
+    int inlinedEntries;
     int exclusive;
     int inclusive;
     int deoptOnes;
@@ -62,7 +62,9 @@ class ProfilingDataParser {
 public:
     ProfilingDataParser(QJsonObject &root)
     {
-        totalExclusive = 0;
+        totalExclusive = totalInclusive = totalTime = speshTime
+            = totalEntries = speshEntries = inlinedEntries = JITEntries
+            = totalOSR = totalDeoptOnes = totalDeoptAlls = 0;
         totalTime = root["total_time"].toInt();
         speshTime = root["spesh_time"].toInt();
         QJsonObject callGraph = root["call_graph"].toObject();
