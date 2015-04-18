@@ -6,11 +6,13 @@
 #include <QWidget>
 #include <QSortFilterProxyModel>
 #include <QLineEdit>
+#include <QVBoxLayout>
 
 class RoutineView : public QWidget {
     Q_OBJECT;
-    QTableView tableView;
-    QLineEdit searchField;
+    QVBoxLayout *vbox;
+    QTableView *tableView;
+    QLineEdit *searchField;
     QSortFilterProxyModel sfpmodel;
 
 public:

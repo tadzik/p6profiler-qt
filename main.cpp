@@ -1,6 +1,6 @@
 #include "ProfilingDataParser.h"
 #include "RoutineListModel.h"
-#include "RoutineView.h"
+#include "View.h"
 #include <QAbstractTableModel>
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -37,11 +37,13 @@ int main(int argc, char *argv[])
 
     ProfilingDataParser pdp(thingy);
     RoutineListModel rlm(0, pdp.buildRoutineList());
+    QMap<QString, QVariant> ovm(pdp.buildOverviewData());
 
     QApplication app(argc, argv);
 
-    RoutineView view;
-    view.setModel(&rlm);
+    View view;
+    view.setRoutineModel(&rlm);
+    view.setOverviewModel(&ovm);
     view.show();
     return app.exec();
 }
