@@ -123,7 +123,8 @@ QMap<QString, QVariant> ProfilingDataParser::buildOverviewData()
     int optimizedFrames    = speshEntries + JITEntries;
     ret["OptimizedFrames"] = optimizedFrames;
     ret["DeoptOnes"]       = totalDeoptOnes;
-    ret["DeoptOnePercent"] = 100 * (float)totalDeoptOnes / (optimizedFrames || 1);
+    if (!optimizedFrames) optimizedFrames = 1;
+    ret["DeoptOnePercent"] = 100 * (float)totalDeoptOnes / optimizedFrames;
     ret["DeoptAlls"]       = totalDeoptAlls;
     ret["OSRs"]            = totalOSR;
 
