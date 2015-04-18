@@ -14,6 +14,8 @@ RoutineView::RoutineView(QWidget *parent) : QWidget(parent)
     tableView->resizeColumnsToContents();
     tableView->setSortingEnabled(true);
     tableView->setItemDelegate(new RoutineItemDelegate(tableView));
+    tableView->horizontalHeader()
+             ->setSectionResizeMode(QHeaderView::Stretch);
     vbox->addWidget(tableView);
     setLayout(vbox);
 }
