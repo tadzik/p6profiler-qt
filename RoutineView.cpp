@@ -1,4 +1,5 @@
 #include "RoutineView.h"
+#include "RoutineItemDelegate.h"
 
 RoutineView::RoutineView(QWidget *parent) : QWidget(parent)
 {
@@ -12,6 +13,7 @@ RoutineView::RoutineView(QWidget *parent) : QWidget(parent)
     tableView->verticalHeader()->hide();
     tableView->resizeColumnsToContents();
     tableView->setSortingEnabled(true);
+    tableView->setItemDelegate(new RoutineItemDelegate(tableView));
     vbox->addWidget(tableView);
     setLayout(vbox);
 }
@@ -20,6 +22,7 @@ void RoutineView::setModel(RoutineListModel *rlm)
 {
     sfpmodel.setSourceModel(rlm);
     sfpmodel.setFilterKeyColumn(0);
+    sfpmodel.setSortRole(Qt::UserRole);
     tableView->setModel(&sfpmodel);
 }
 

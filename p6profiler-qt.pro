@@ -8,7 +8,10 @@ INCLUDEPATH += .
 QT += widgets
 
 # Input
-HEADERS += RoutineListModel.h ProfilingDataParser.h RoutineView.h Overview.h View.h
+HEADERS += RoutineListModel.h ProfilingDataParser.h \
+           RoutineItemDelegate.h \
+           RoutineView.h Overview.h View.h
 SOURCES += main.cpp RoutineListModel.cpp ProfilingDataParser.cpp \
+           RoutineItemDelegate.cpp \
            RoutineView.cpp Overview.cpp View.cpp
     

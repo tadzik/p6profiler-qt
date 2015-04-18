@@ -16,10 +16,16 @@ int RoutineListModel::columnCount(const QModelIndex&) const
 
 QVariant RoutineListModel::data(const QModelIndex &idx, int role) const
 {
-    if (role != Qt::DisplayRole) {
+    RoutineListEntry *rle = routineList[idx.row()];
+    if (role != Qt::DisplayRole && role != Qt::UserRole) {
         return QVariant();
     }
-    RoutineListEntry *rle = routineList[idx.row()];
+    if (role == Qt::UserRole && idx.column() == 2) {
+        return rle->inclusiveTimePercent;
+    }
+    if (role == Qt::UserRole && idx.column() == 3) {
+        return rle->exclusiveTimePercent;
+    }
     switch (idx.column()) {
     case 0:
         return rle->name + " (" + rle->file + ":" + QString::number(rle->line) + ")";
