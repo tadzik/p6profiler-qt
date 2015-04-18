@@ -30,7 +30,7 @@ void ProfilingDataParser::walkCallGraphNode(QJsonObject& node)
     routines[id]->deoptAlls      += node["deopt_all"].toInt();
     totalDeoptAlls               += node["deopt_all"].toInt();
     if (routines[id]->recDepth == 0) {
-        routines[id]->inclusive += node["exclusive_time"].toInt();
+        routines[id]->inclusive += node["inclusive_time"].toInt();
     }
     QJsonArray callees(node["callees"].toArray());
     if (callees.count() > 0) {
