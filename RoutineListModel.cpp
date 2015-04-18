@@ -21,10 +21,10 @@ QVariant RoutineListModel::data(const QModelIndex &idx, int role) const
         return QVariant();
     }
     if (role == Qt::UserRole && idx.column() == 2) {
-        return rle->inclusiveTimePercent;
+        return rle->inclusiveTime;
     }
     if (role == Qt::UserRole && idx.column() == 3) {
-        return rle->exclusiveTimePercent;
+        return rle->exclusiveTime;
     }
     switch (idx.column()) {
     case 0:
