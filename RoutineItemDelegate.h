@@ -1,11 +1,11 @@
 #ifndef _ROUTINE_ITEM_DELEGATE_
 #define _ROUTINE_ITEM_DELEGATE_
 
-#include <QItemDelegate>
+#include <QStyledItemDelegate>
 #include <QTableView>
 
-class RoutineItemDelegate : public QItemDelegate {
-    Q_OBJECT;
+class RoutineItemDelegate : public QStyledItemDelegate {
+    Q_OBJECT
     QTableView *tableView;
 public:
     RoutineItemDelegate(QTableView *tv);

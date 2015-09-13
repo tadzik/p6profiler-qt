@@ -2,7 +2,7 @@
 #include <QStyleOptionProgressBar>
 #include <QApplication>
 
-RoutineItemDelegate::RoutineItemDelegate(QTableView *tv) : QItemDelegate(tv)
+RoutineItemDelegate::RoutineItemDelegate(QTableView *tv) : QStyledItemDelegate(tv)
 {
     tableView = tv;
 }
@@ -11,7 +11,7 @@ void RoutineItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
                                 const QModelIndex &idx) const Q_DECL_OVERRIDE
 {
     if (idx.column() < 2) {
-        QItemDelegate::paint(painter, option, idx);
+        QStyledItemDelegate::paint(painter, option, idx);
         return;
     }
 

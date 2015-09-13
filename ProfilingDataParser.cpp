@@ -76,9 +76,9 @@ QVector<RoutineListEntry*> ProfilingDataParser::buildRoutineList()
         rle->interpEntriesPercent = 100 - rle->speshEntriesPercent
                                         - rle->JITEntriesPercent;
         rle->inclusiveTime = (double)rd->inclusive / 1000;
-        rle->inclusiveTimePercent = 100 * rd->inclusive / totalInclusive;
+        rle->inclusiveTimePercent = (100 * ((double)rd->inclusive / totalInclusive));
         rle->exclusiveTime = (double)rd->exclusive / 1000;
-        rle->exclusiveTimePercent = 100 * rd->exclusive / totalExclusive;
+        rle->exclusiveTimePercent = (100 * ((double)rd->exclusive / totalExclusive));
         rle->OSR = rd->OSR;
         routineList.push_back(rle);
     }

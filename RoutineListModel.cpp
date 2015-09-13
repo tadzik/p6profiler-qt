@@ -21,24 +21,28 @@ QVariant RoutineListModel::data(const QModelIndex &idx, int role) const
         return QVariant();
     }
     if (role == Qt::UserRole && idx.column() == 2) {
-        return rle->inclusiveTime;
+        return rle->inclusiveTimePercent;
     }
     if (role == Qt::UserRole && idx.column() == 3) {
-        return rle->exclusiveTime;
+        return rle->exclusiveTimePercent;
     }
     switch (idx.column()) {
     case 0:
-        return rle->name + " (" + rle->file + ":" + QString::number(rle->line) + ")";
+        if (rle->line == -2) {
+            return rle->name + " (" + rle->file + ")";
+        } else {
+            return rle->name + " (" + rle->file + ":" + QString::number(rle->line) + ")";
+        }
         break;
     case 1:
         return rle->entries;
         break;
     case 2:
-        return QString::number(rle->inclusiveTimePercent)
+        return QString::number(std::min(100.0f, rle->inclusiveTimePercent), 'f', 2)
             + "% (" + QString::number(rle->inclusiveTime) + "ms)";
         break;
     case 3:
-        return QString::number(rle->exclusiveTimePercent)
+        return QString::number(std::min(100.0f, rle->exclusiveTimePercent), 'f', 2)
             + "% (" + QString::number(rle->exclusiveTime) + "ms)";
         break;
     default:

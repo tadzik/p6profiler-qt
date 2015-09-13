@@ -11,9 +11,9 @@ struct RoutineListEntry {
     int speshEntriesPercent;
     int JITEntriesPercent;
     float inclusiveTime;
-    int inclusiveTimePercent;
+    float inclusiveTimePercent;
     float exclusiveTime;
-    int exclusiveTimePercent;
+    float exclusiveTimePercent;
     int OSR;
     // 12 columns
 };
