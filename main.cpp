@@ -33,9 +33,8 @@ int main(int argc, char *argv[])
         qDebug() << "Malformed input file";
         return 1;
     }
-    QJsonObject thingy = arr[0].toObject();
 
-    ProfilingDataParser pdp(thingy);
+    ProfilingDataParser pdp(arr);
     RoutineListModel rlm(0, pdp.buildRoutineList());
     QMap<QString, QVariant> ovm(pdp.buildOverviewData());
 

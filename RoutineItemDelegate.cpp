@@ -8,7 +8,7 @@ RoutineItemDelegate::RoutineItemDelegate(QTableView *tv) : QStyledItemDelegate(t
 }
 
 void RoutineItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
-                                const QModelIndex &idx) const Q_DECL_OVERRIDE
+                                const QModelIndex &idx) const
 {
     if (idx.column() < 2) {
         QStyledItemDelegate::paint(painter, option, idx);

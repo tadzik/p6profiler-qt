@@ -6,6 +6,14 @@
 #include <QMap>
 #include "RoutineListModel.h"
 
+// for allocations only name will be filled
+// I hope it doesn't fuck shit up
+struct ThingData {
+    QString name;
+    QString file;
+    int     line;
+};
+
 struct RoutineData {
     int id;
     int entries;
@@ -46,6 +54,7 @@ struct GCData {
 
 class ProfilingDataParser {
     QMap<int, RoutineData*> routines;
+    QMap<int, ThingData*>   things;
     int totalExclusive;
     int totalInclusive;
     GCData gcData;
@@ -60,20 +69,24 @@ class ProfilingDataParser {
     int totalDeoptAlls;
 
 public:
-    ProfilingDataParser(QJsonObject &root)
+    ProfilingDataParser(QJsonArray &root)
     {
         totalExclusive = totalInclusive = totalTime = speshTime
             = totalEntries = speshEntries = inlinedEntries = JITEntries
             = totalOSR = totalDeoptOnes = totalDeoptAlls = 0;
-        totalTime = root["total_time"].toInt();
-        speshTime = root["spesh_time"].toInt();
-        QJsonObject callGraph = root["call_graph"].toObject();
+        QJsonObject things = root[0].toObject();
+        QJsonObject rest   = root[1].toObject();
+        walkThingsNode(things);
+        totalTime = rest["total_time"].toInt();
+        speshTime = rest["spesh_time"].toInt();
+        QJsonObject callGraph = rest["call_graph"].toObject();
         totalInclusive = callGraph["inclusive_time"].toInt();
         walkCallGraphNode(callGraph);
-        QJsonArray gcData = root["gcs"].toArray();
+        QJsonArray gcData = rest["gcs"].toArray();
         walkGCNodes(gcData);
     }
 
+    void walkThingsNode(QJsonObject&);
     void walkCallGraphNode(QJsonObject&);
     void walkGCNodes(QJsonArray&);
 

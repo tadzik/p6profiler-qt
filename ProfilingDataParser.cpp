@@ -1,17 +1,37 @@
 #include "ProfilingDataParser.h"
 
+void ProfilingDataParser::walkThingsNode(QJsonObject& node)
+{
+    QJsonObject::const_iterator it;
+    for (it = node.begin(); it != node.end(); it++) {
+        int id = it.key().toInt();
+        if (!things.contains(id)) {
+            things[id] = new ThingData();
+        }
+        if (it.value().isString()) {
+            things[id]->name = it.value().toString();
+        } else {
+            QJsonObject t = it.value().toObject();
+            things[id]->name = t["name"].toString();
+            things[id]->file = t["file"].toString();
+            things[id]->line = t["line"].toInt();
+
+        }
+    }
+}
+
 // I kept is as close as possible to the JS version, some thing could've been
 // done better, but this at least looks mostly the same as the original, so
 // it's easier to track changes to both
 void ProfilingDataParser::walkCallGraphNode(QJsonObject& node)
 {
-    int id = node["id"].toInt();
+    int id = node["id"].toString().toInt();
     if (!routines.contains(id)) {
         routines[id] = new RoutineData(id);
     }
-    routines[id]->name = node["name"].toString();
-    routines[id]->file = node["file"].toString();
-    routines[id]->line = node["line"].toInt();
+    routines[id]->name = things[id]->name;
+    routines[id]->file = things[id]->file;
+    routines[id]->line = things[id]->line;
 
     routines[id]->entries        += node["entries"].toInt();
     totalEntries                 += node["entries"].toInt();
