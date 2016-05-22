@@ -8,11 +8,12 @@
 #include <QFile>
 #include <QDebug>
 #include <QApplication>
+#include <QJsonParseError>
 
 int main(int argc, char *argv[])
 {
     if (argc != 2) {
-        qDebug() << "Usage:" << argv[0] << "<filename.json>";
+        qDebug() << "Usage:" << argv[0] << "<filename.[json,html]>";
         return 1;
     }
     QFile profile(argv[1]);
@@ -23,9 +24,8 @@ int main(int argc, char *argv[])
     QByteArray jsondata = profile.readAll();
     profile.close();
 
-    QJsonDocument rawdata(QJsonDocument::fromJson(jsondata));
-    if (!rawdata.isArray()) {
-        // perhaps we got .html in, let's try to rip JSON from that
+    if (profile.fileName().endsWith(".html", Qt::CaseInsensitive)) {
+        // we got .html in, let's try to rip JSON from that
         QByteArray pattern("var rawData = JSON.parse('");
         int lineStart = jsondata.indexOf(pattern);
         if (lineStart != -1) {
@@ -40,15 +40,15 @@ int main(int argc, char *argv[])
             }
         }
     }
-    rawdata = QJsonDocument::fromJson(jsondata);
+    QJsonParseError err;
+    QJsonDocument rawdata(QJsonDocument::fromJson(jsondata, &err));
     if (!rawdata.isArray()) {
-        // if that didn't work either, we're screwed
-        qDebug() << "Malformed input file";
+        qDebug() << "Malformed input file, top level isn't an array:" << err.errorString();
         return 1;
     }
     QJsonArray arr = rawdata.array();
     if (!arr[0].isObject()) {
-        qDebug() << "Malformed input file";
+        qDebug() << "Malformed input file, first element in array isn't an object:" << err.errorString();
         return 1;
     }
 
