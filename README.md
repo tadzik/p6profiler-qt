@@ -7,10 +7,7 @@ To build it:
 
     qmake
     make
-    ./p6profiler-qt file.json
-
-You'd have to extract the json from the profile-\d+.html files that --profile or
---profile-compile produces.
+    ./p6profiler-qt file.[json,html]
 
 As usual, patches welcome. The C++ is likely pretty horrible, so patches with no functional
 changes are also welcome :)
