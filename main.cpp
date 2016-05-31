@@ -61,6 +61,7 @@ int main(int argc, char *argv[])
     View view;
     view.setRoutineModel(&rlm);
     view.setOverviewModel(&ovm);
+    view.setWindowTitle(argv[1] + QString(" - ") + argv[0]);
     view.show();
     return app.exec();
 }
